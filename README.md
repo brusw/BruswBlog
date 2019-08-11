@@ -1,4 +1,4 @@
-# Yuuko Blog
+# Brusw Blog
 
 A light-weight single user blog system which based on ASP.Net Core 2.0.0
 - ASP.Net Core 2.0.0
