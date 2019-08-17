@@ -1,12 +1,12 @@
 ﻿<div class="grid_3">
     <div class="sidebar">
-        @Html.Partial("PostInfo")
-        @Html.Partial($"~/Views/{Template.Current.Identifier}/Shared/Catalog.cshtml")
-        @Html.Partial("Tag")
-        @Html.Partial("Calendar")
-        @Html.Partial("Admin")
+        @await Html.PartialAsync("PostInfo")
+        @await Html.PartialAsync($"~/Views/{Template.Current.Identifier}/Shared/Catalog.cshtml")
+        @await Html.PartialAsync("Tag")
+        @await Html.PartialAsync("Calendar")
+        @await Html.PartialAsync("Admin")
     </div>
-    @Html.Partial("About")
-    @Html.Partial("Roll")
+    @await Html.PartialAsync("About")
+    @await Html.PartialAsync("Roll")
 </div>
 <div class="clear"></div>

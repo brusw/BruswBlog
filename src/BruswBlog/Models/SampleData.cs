@@ -8,8 +8,11 @@ namespace BruswBlog.Models
     {
         public static async Task InitializeBruswBlog(IServiceProvider serviceProvider)
         {
-            var db = serviceProvider.GetService<BlogContext>();
-            await db.Database.EnsureCreatedAsync();
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetService<BlogContext>();
+                await db.Database.EnsureCreatedAsync();
+            }
         }
     }
 }
