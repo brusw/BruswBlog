@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Pomelo.AspNetCore.Localization;
 using BruswBlog.Models;
 
@@ -13,11 +12,15 @@ namespace BruswBlog
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; set; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            IConfiguration Configuration;
-            services.AddConfiguration(out Configuration);
-
             if (Configuration["Database:Type"] == "SQLite")
             {
                 services.AddDbContext<BlogContext>(x => x.UseSqlite(Configuration["Database:ConnectionString"]));
@@ -49,31 +52,24 @@ namespace BruswBlog
             services.AddTimedJob();
         }
 
-        public async void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(LogLevel.Warning, true);
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseStaticFiles();
+
             app.UseSession();
+
             app.UseBlobStorage("/assets/shared/scripts/jquery.codecomb.fileupload.js");
-            app.UseDeveloperExceptionPage();
+
             app.UseMvcWithDefaultRoute();
 
             await SampleData.InitializeBruswBlog(app.ApplicationServices);
 
             app.UseTimedJob();
-        }
-
-        public static void Main(string[] args)
-        {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseIISIntegration()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
         }
     }
 }

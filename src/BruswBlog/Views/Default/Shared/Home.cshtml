@@ -48,7 +48,7 @@
         @Html.Paging("post-nav-page", "post-nav-page-current", "post-nav", null, new[] { "raw" })
         <div class="clear"></div>
     </div>
-    @Html.Partial("Sidebar")
+    @await Html.PartialAsync("Sidebar")
 </div>
 @if (Raw)
 {
